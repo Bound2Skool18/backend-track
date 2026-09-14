@@ -96,18 +96,3 @@ async def list_tasks(
         return result
 
 
-#https://github.com/Bound2Skool18/backend-track.git
-
-git init
-git add .
-git commit -m "Stage 0: hello server"
-git commit -am "Stage 1: root and health endpoints"
-git commit -am "Stage 2: read endpoints with 404"
-git commit -am "Stage 3: create with validation"
-git commit -am "Stage 4: full CRUD"
-git commit -am "Stage 5: Swagger UI"
-git add README.md
-git commit -m "Stage 6: publish and docs"
-git branch -M main
-git remote add origin https://github.com/Bound2Skool18/backend-track.git
-git push -u origin main
