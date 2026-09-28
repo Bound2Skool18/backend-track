@@ -111,4 +111,4 @@ recording its ID, restarting the server, and retrieving that same ID.
 
 ![Swagger UI showing the task endpoints](docs/swagger.png)
 
-![Tasks table in SQLite Viewer](docs/database.png)
+![SQL query and task rows in DB Browser for SQLite](docs/database.png)
