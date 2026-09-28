@@ -1,0 +1,13 @@
+.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+tasks.db
+tasks.db-journal
+tasks.db-wal
+tasks.db-shm
+
+# README screenshots are stored in docs/.
+/Screenshot*.png
