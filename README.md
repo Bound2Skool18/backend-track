@@ -75,16 +75,33 @@ Invalid input returns 400. Unknown task IDs return 404.
 Errors use the form `{"error": "Explanation"}`.
 Successful deletion returns 204 with an empty body.
 
-## Example HTTP response
+## CRUD verification
 
-Run:
+The following response was captured while creating a task with `curl -i`:
 
 ```bash
-curl -i http://localhost:8000/health
+curl -i -X POST http://localhost:8000/tasks \
+  -H 'Content-Type: application/json' \
+  -d '{"title":"Verify persistence"}'
 ```
 
-Replace this paragraph with the actual output, including the status line,
-headers, and response body.
+```http
+HTTP/1.1 201 Created
+server: uvicorn
+content-length: 50
+content-type: application/json
+
+{"id":4,"title":"Verify persistence","done":false}
+```
+
+The rest of the same CRUD check produced these results:
+
+| Request | Observed result |
+|---|---|
+| `PUT /tasks/4` with `{"done":true}` | `200 OK`; the response contained `"done":true` |
+| `GET /tasks/4` after restarting the server | `200 OK`; task 4 was unchanged |
+| `DELETE /tasks/4` | `204 No Content`; the response body was empty |
+| `GET /tasks/4` after deletion | `404 Not Found`; `{"error":"Task not found"}` |
 
 ## SQL exploration
 
@@ -99,13 +116,26 @@ WHERE done = 1;
 This query selects completed tasks. SQLite stores done as 0 or 1;
 the API returns false or true.
 
-Replace this paragraph with what the query returned in your database
-and how a saved manual SQL change appeared through the API.
+During verification, task 4 appeared as `4|Verify persistence|1`. It was
+then edited directly with SQL:
+
+```sql
+UPDATE tasks
+SET title = 'Edited directly with SQL'
+WHERE id = 4;
+```
+
+The next `GET /tasks/4` returned
+`{"id":4,"title":"Edited directly with SQL","done":true}` without a
+server restart. This confirms that the API and the SQLite tools read the
+same database file.
 
 ## Persistence check
 
-Replace this paragraph with your observed result after creating a task,
-recording its ID, restarting the server, and retrieving that same ID.
+On October 12, 2026, task 4 was created and updated, the FastAPI process
+was stopped completely, and the application was started again. A new
+`GET /tasks/4` returned `200 OK` with the same id, title, and completed
+state. The task was then deleted as part of the CRUD verification above.
 
 ## Screenshots
 

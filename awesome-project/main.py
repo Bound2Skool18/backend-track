@@ -132,7 +132,7 @@ async def get_task(task_id: int):
     if row is None:
         return JSONResponse(
             status_code=404,
-            content={"error": f"Task {task_id} not found"},
+            content={"error": "Task not found"},
         )
 
     task = dict(row)
@@ -205,7 +205,7 @@ async def update_task(task_id: int, task_input: TaskUpdate):
         ).fetchone()
 
         if existing is None:
-            raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
+            raise HTTPException(status_code=404, detail="Task not found")
 
         changes = task_input.model_dump(exclude_unset=True)
         if not changes:
@@ -256,7 +256,7 @@ async def delete_task(task_id: int):
         ).fetchone()
 
         if existing is None:
-            raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
+            raise HTTPException(status_code=404, detail="Task not found")
 
         conn.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
 
